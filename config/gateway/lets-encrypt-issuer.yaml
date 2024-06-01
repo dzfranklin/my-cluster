@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-issuer
+spec:
+  acme:
+    email: daniel@danielzfranklin.org
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-issuer-account-key
+    solvers:
+      - selector:
+          dnsZones:
+            - plantopo.com
+            - dfranklin.dev
+            - dfusercontent.com
+        dns01:
+          route53:
+            region: us-east-1
+            accessKeyIDSecretRef:
+              name: cert-manager-dns-solver-aws-creds
+              key: access-key-id
+            secretAccessKeySecretRef:
+                name: cert-manager-dns-solver-aws-creds
+                key: secret-access-key
